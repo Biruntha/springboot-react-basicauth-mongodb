@@ -6,15 +6,15 @@ import { Paper, Typography, AppBar, Toolbar, Button, IconButton } from "@materia
 
 import AuthService from "./services/auth.service";
 
-import Login from "./components/login.component";
-import Register from "./components/register.component";
-import Home from "./components/home.component";
-import Profile from "./components/profile.component";
-import BoardUser from "./components/board-user.component";
-import BoardModerator from "./components/board-moderator.component";
-import BoardAdmin from "./components/board-admin.component";
+import Login from "./components/Login";
+import Register from "./components/Register";
+import Home from "./components/Home";
+import Profile from "./components/Profile";
+import BoardUser from "./components/BoardUser";
+import BoardModerator from "./components/BoardModerator";
+import BoardAdmin from "./components/BoardAdmin";
 import { AccountCircle } from "@material-ui/icons";
-import Footer from "./components/footer.component";
+import Footer from "./components/Footer";
 
 const style = {
   paper: {
@@ -120,7 +120,7 @@ class App extends Component {
             </Toolbar>
           </AppBar>
 
-          <div className="container mt-3">
+          <div>
             <Switch>
               <Route exact path={["/", "/home"]} component={Home} />
               <Route exact path="/login" component={Login} />

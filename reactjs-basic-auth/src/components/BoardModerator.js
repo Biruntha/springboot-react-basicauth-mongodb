@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 import UserService from "../services/user.service";
-import Container from "./container.component";
+import Container from "./Container";
 
 export default class BoardModerator extends Component {
   constructor(props) {

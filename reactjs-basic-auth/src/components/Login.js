@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
-import CheckButton from "react-validation/build/button";
 
 import { Card, CardContent, Typography, CardActionArea, Grid, FormControl, CircularProgress } from '@material-ui/core';
 import { Face } from '@material-ui/icons';
@@ -17,22 +16,10 @@ const style = {
   }
 }
 
-const required = value => {
-  if (!value) {
-    return (
-      <Typography color='error' variant="overline" display="block" gutterBottom>
-          <strong>This field is required!</strong>
-      </Typography>
-    );
-  }
-};
 
 export default class Login extends Component {
   constructor(props) {
     super(props);
-    this.handleLogin = this.handleLogin.bind(this);
-    this.onChangeUsername = this.onChangeUsername.bind(this);
-    this.onChangePassword = this.onChangePassword.bind(this);
 
     this.state = {
       username: "",
@@ -42,19 +29,19 @@ export default class Login extends Component {
     };
   }
 
-  onChangeUsername(e) {
+  onChangeUsername = (e) => {
     this.setState({
       username: e.target.value
     });
   }
 
-  onChangePassword(e) {
+  onChangePassword = (e) => {
     this.setState({
       password: e.target.value
     });
   }
 
-  handleLogin(e) {
+  handleLogin = (e) => {
     e.preventDefault();
 
     this.setState({
@@ -62,33 +49,25 @@ export default class Login extends Component {
       loading: true
     });
 
-    this.form.validateAll();
+    AuthService.login(this.state.username, this.state.password)
+      .then(() => {
+        this.props.history.push("/profile");
+        window.location.reload();
+      },
+      error => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
 
-    if (this.checkBtn.context._errors.length === 0) {
-      AuthService.login(this.state.username, this.state.password).then(
-        () => {
-          this.props.history.push("/profile");
-          window.location.reload();
-        },
-        error => {
-          const resMessage =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString();
-
-          this.setState({
-            loading: false,
-            message: resMessage
-          });
-        }
-      );
-    } else {
-      this.setState({
-        loading: false
-      });
-    }
+        this.setState({
+          loading: false,
+          message: resMessage
+        });
+      }
+    );
   }
 
   render() {
@@ -99,11 +78,7 @@ export default class Login extends Component {
           <Card style={style.root}>
             <CardActionArea>
               <CardContent>
-                <Form onSubmit={this.handleLogin}
-                  ref={c => {
-                    this.form = c;
-                  }}
-                >
+                <Form onSubmit={this.handleLogin}>
                   <Grid container spacing={1}>
                       <Grid item xs={12} alignItems='center'>
                         <Face style={{ fontSize: 80 }}/>
@@ -112,14 +87,14 @@ export default class Login extends Component {
                         <FormControl>
                           <label htmlFor="username">Username</label>
                           <Input type="text" name="username" value={this.state.username}
-                            onChange={this.onChangeUsername} validations={[required]} />
+                            onChange={this.onChangeUsername}/>
                         </FormControl>
                       </Grid>
                       <Grid item xs={12}>
                       <FormControl>
                           <label htmlFor="password">Password</label>
                           <Input type="password" name="password" value={this.state.password}
-                            onChange={this.onChangePassword} validations={[required]}/>
+                            onChange={this.onChangePassword}/>
                         </FormControl>
                       </Grid>
                       <Grid item xs={12}>
@@ -140,11 +115,6 @@ export default class Login extends Component {
                       </Typography>
                     </div>
                   )}
-                  <CheckButton style={{ display: "none" }}
-                    ref={c => {
-                      this.checkBtn = c;
-                    }}
-                  />
                 </Form>
               </CardContent>
             </CardActionArea>

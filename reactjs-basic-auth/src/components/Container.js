@@ -22,7 +22,7 @@ const style = {
 function Container(props) {
     return (
       <React.Fragment>
-        <Grid container spacing={3}>
+        <Grid container>
           <Grid item xs={2}/>
           <Grid item xs={8}>
             <Paper>

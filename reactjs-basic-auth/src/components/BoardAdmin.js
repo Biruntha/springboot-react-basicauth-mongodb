@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 
 import UserService from "../services/user.service";
-import Container from "./container.component";
+import Container from "./Container";
 
-export default class Home extends Component {
+export default class BoardAdmin extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -12,7 +12,7 @@ export default class Home extends Component {
   }
 
   componentDidMount() {
-    UserService.getPublicContent().then(
+    UserService.getAdminBoard().then(
       response => {
         this.setState({
           content: response.data
@@ -21,7 +21,9 @@ export default class Home extends Component {
       error => {
         this.setState({
           content:
-            (error.response && error.response.data) ||
+            (error.response &&
+              error.response.data &&
+              error.response.data.message) ||
             error.message ||
             error.toString()
         });
